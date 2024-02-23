@@ -1,0 +1,168 @@
+﻿@model List<Product>
+
+<style>
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .price {
+        font-size: 1.2rem;
+        color: #333
+    }
+
+    .discount-price {
+        font-size: 1rem;
+        text-decoration: line-through;
+        color: #999;
+    }
+
+    .badge-sale {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background-color: red;
+        color: white;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .card {
+        position: relative;
+    }
+
+    .btn-group {
+        width: 100%;
+    }
+
+        .btn-group > button {
+            width: 50%;
+        }
+
+    .card-link {
+        color;
+        text-decoration: none;
+    }
+
+        .card-link:hover {
+            text-decoration: none;
+        }
+</style>
+
+<form action="/home/products" method="get">
+    <input type="hidden" name="categoryId" value="@ViewBag.CategoryId" />
+    <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" placeholder="Search.."/>
+    <select name="sortOrder">
+        @if(ViewBag.SortOrder == "name")
+        {
+            <option value="name" selected>Sort by name(A-Z)</option>
+
+        }
+        else
+        {
+            <option value="name">Sort by name(A-Z)</option>
+        }
+        @if (ViewBag.SortOrder == "name-desc")
+        {
+            <option value="name_desc" selected>Sort by name(Z-A)</option>
+        }
+        else
+        {
+            <option value="name_desc">Sort by name(Z-A)</option>
+        }
+        @if (ViewBag.SortOrder == "price")
+        {
+            <option value="price" selected>Sort by lowest price</option>
+        }
+        else
+        {
+            <option value="price">Sort by lowest price</option>
+        }
+        @if (ViewBag.SortOrder == "price_desc")
+        {
+            <option value="price_desc" selected>Sort by highest price</option>
+        }
+        else
+        {
+            <option value="price_desc">Sort by highest price</option>
+        }
+        @if (ViewBag.SortOrder == "newest")
+        {
+            <option value="newest" selected>Sort by newest</option>
+        }
+        else
+        {
+            <option value="newest">Sort by newest</option>
+        }
+        @if (ViewBag.SortOrder == "price_desc")
+        {
+            <option value="oldest" selected>Sort by oldest</option>
+        }
+        else
+        {
+            <option value="oldest">Sort by oldest</option>
+        }    
+    </select>
+    <button type="submit">Search</button>
+
+</form>
+
+<div class="container mt-5">
+    <div class="row">
+        @foreach (var product in Model)
+        {
+
+            <div class="col-md-3">
+                <a href="/home/productdetails?productId=@product.Id">
+                    <div class="card">
+                        @if (product.IsDiscount)
+                        {
+                            <div class="badge badge-sale">Akcija</div>
+                        }
+                        <img src="/images/@product.images.First().ImagePath" class="card-img-top" />
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text">@product.Description</p>
+                            @if (product.IsDiscount)
+                            {
+                                <div class="price">@product.DiscountPrice€</div>
+                                <div class="discount-price">@product.Price</div>
+                            }
+                            else
+                            {
+                                <div class="price">@product.Price€</div>
+                                <br />
+                            }
+                            <div class="btn-group" role="group">
+                                <a href="/home/AddToCart?productId=@product.Id" class="btn btn-primary">U košaricu</a>
+                                <button type="button" class="btn btn-success">Kupi</button>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    @if(ViewBag.PageNumber > 1)
+    {
+        <a href="/home/products?categoryId=@(ViewBag.CategoryId)&searchTerm=@(ViewBag.SearchTerm)&sortOrder=@(ViewBag.SortOrder)&page=1">First</a>
+        <a href="/home/products?categoryId=@(ViewBag.CategoryId)&searchTerm=@(ViewBag.SearchTerm)&sortOrder=@(ViewBag.SortOrder)&page=@(ViewBag.PageNumber-1)">Back</a>
+    }
+    @for (int i=0; i <=ViewBag.TotalPages; i++)
+    {
+        <a href="/home/products?categoryId=@(ViewBag.CategoryId)&searchTerm=@(ViewBag.SearchTerm)&sortOrder=@(ViewBag.SortOrder)&page=@(i)">@i</a>
+    }
+
+        
+   
+    @if(ViewBag.PageNumber< ViewBag.TotalPages)
+    {
+        <a href="/home/products?categoryId=@(ViewBag.CategoryId)&searchTerm=@(ViewBag.SearchTerm)&sortOrder=@(ViewBag.SortOrder)&page=@(ViewBag.PageNumber+1)">Next</a>
+        <a href="/home/products?categoryId=@(ViewBag.CategoryId)&searchTerm=@(ViewBag.SearchTerm)&sortOrder=@(ViewBag.SortOrder)&page=@(ViewBag.TotalPages)">Last</a>
+    }
+
+
+</div>

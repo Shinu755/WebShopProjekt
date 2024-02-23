@@ -1,0 +1,29 @@
+﻿@model List<WebShopProjekt.Models.Order>
+
+    <h2>Narudžbe</h2>
+
+@foreach(var order in Model)
+{
+    <div>
+        <h3>Narudžba @order.Id - @order.Name @order.LastName</h3>
+        <p>Adresa: @order.Address, @order.City, @order.Zip</p>
+        <p>Telefon: @order.Phone</p>
+        <p>Datum: @order.OrderDate.ToString("dd/MM/yyyy")</p>
+        <p>Narudžba završena: @order.OrderCompleted</p>
+        <table>
+            <tr>
+                <th>Proizvod</th>
+                <th>Količina</th>
+                <th>Cijena</th>
+            </tr>
+            @foreach(var item in order.Items)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price</td>
+                </tr>
+            }
+        </table>
+    </div>
+}

@@ -1,0 +1,28 @@
+﻿@model List<Category>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<h4>Sve Kategorije</h4>
+<table class="table">
+    <tr>
+        <th>Slika</th>
+        <th>Naziv</th>
+        <th>Opis</th>
+        <th></th>
+    </tr>
+    @foreach (var category in Model)
+    {
+        <tr>
+            <td>
+                <img src="/images/@category.ImagePath" width="100" height="100"/>
+            </td>
+            <td>@category.Name</td>
+            <td>@category.Description</td>
+            <td>
+                <button class="bi bi-trash"></button>
+            </td>
+        </tr>
+    }
+</table>
+
+<a class="btn btn-dark" href="/Categories/Create">Dodaj novu kategoriju</a>
+

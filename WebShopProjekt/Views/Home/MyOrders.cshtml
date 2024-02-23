@@ -1,0 +1,26 @@
+﻿@model List<WebShopProjekt.Models.Order>
+
+<h2>Narudžbe</h2>
+
+@foreach (var order in Model)
+{
+    <div>
+        <h3>Narudžba @order.Id</h3>
+        <p>Datum: @order.OrderDate.ToString("dd/MM/yyyy")</p>
+        <table>
+            <tr>
+                <th>Proizvod</th>
+                <th>Količina</th>
+                <th>Cijena</th>
+            </tr>
+            @foreach (var item in order.Items)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price</td>
+                </tr>
+            }
+        </table>
+    </div>
+}
